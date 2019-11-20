@@ -6,7 +6,7 @@
 import Foundation
 import CoreData
 
-@objc(Singer)
-public class Singer: NSManagedObject {
+@objc(Candy)
+public class Candy: NSManagedObject {
 
 }
