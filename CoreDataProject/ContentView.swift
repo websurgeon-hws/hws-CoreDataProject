@@ -9,7 +9,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: Ship.entity(),
                   sortDescriptors: [],
-                  predicate: NSPredicate(format: "universe == %@", "Star Wars")) var ships: FetchedResults<Ship>
+                  predicate: NSPredicate(format: "name < %@", "F")) var ships: FetchedResults<Ship>
 
     var body: some View {
         VStack {
