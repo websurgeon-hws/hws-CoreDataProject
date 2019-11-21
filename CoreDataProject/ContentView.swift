@@ -12,7 +12,11 @@ struct ContentView: View {
     var body: some View {
         VStack {
             FilteredList(filterKey: "lastName",
-                         filterValue: lastNameFilter) { (singer: Singer) in
+                         filterValue: lastNameFilter,
+                         sortDescriptors: [
+                            NSSortDescriptor(key: #keyPath(Singer.lastName), ascending: true),
+                            NSSortDescriptor(key: #keyPath(Singer.firstName), ascending: true)
+                         ]) { (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
 

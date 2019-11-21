@@ -18,14 +18,14 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     
     init(filterKey: String,
          filterValue: String,
+         sortDescriptors: [NSSortDescriptor],
          @ViewBuilder content: @escaping (T) -> Content) {
            fetchRequest = FetchRequest<T>(
                entity: T.entity(),
-               sortDescriptors: [],
+               sortDescriptors: sortDescriptors,
                predicate: NSPredicate(format: "%K BEGINSWITH %@",
                                       filterKey,
                                       filterValue))
-        
         self.content = content
     }
 }
@@ -33,7 +33,8 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
 struct FilteredList_Previews: PreviewProvider {
     static var previews: some View {
         FilteredList(filterKey: "lastName",
-                     filterValue: "A") { (singer: Singer) in
+                     filterValue: "A",
+                     sortDescriptors: []) { (singer: Singer) in
             Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
         }
     }
