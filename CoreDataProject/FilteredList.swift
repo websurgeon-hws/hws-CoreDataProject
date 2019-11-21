@@ -6,6 +6,10 @@ import SwiftUI
 import CoreData
 
 struct FilteredList<T: NSManagedObject, Content: View>: View {
+    enum FilterPredicate: String {
+        case beginsWith = "BEGINSWITH"
+    }
+    
     var fetchRequest: FetchRequest<T>
     let content: (T) -> Content
     var results: FetchedResults<T> { fetchRequest.wrappedValue }
@@ -18,13 +22,13 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     
     init(filterKey: String,
          filterValue: String,
-         predicate: String,
+         predicate: FilterPredicate,
          sortDescriptors: [NSSortDescriptor],
          @ViewBuilder content: @escaping (T) -> Content) {
            fetchRequest = FetchRequest<T>(
                entity: T.entity(),
                sortDescriptors: sortDescriptors,
-               predicate: NSPredicate(format:  "%K \(predicate) %@",
+               predicate: NSPredicate(format:  "%K \(predicate.rawValue) %@",
                                       filterKey,
                                       filterValue))
         self.content = content
@@ -35,7 +39,7 @@ struct FilteredList_Previews: PreviewProvider {
     static var previews: some View {
         FilteredList(filterKey: "lastName",
                      filterValue: "A",
-                     predicate: "BEGINSWITH",
+                     predicate: .beginsWith,
                      sortDescriptors: []) { (singer: Singer) in
             Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
         }
