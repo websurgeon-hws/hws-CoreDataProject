@@ -18,12 +18,13 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     
     init(filterKey: String,
          filterValue: String,
+         predicate: String,
          sortDescriptors: [NSSortDescriptor],
          @ViewBuilder content: @escaping (T) -> Content) {
            fetchRequest = FetchRequest<T>(
                entity: T.entity(),
                sortDescriptors: sortDescriptors,
-               predicate: NSPredicate(format: "%K BEGINSWITH %@",
+               predicate: NSPredicate(format:  "%K \(predicate) %@",
                                       filterKey,
                                       filterValue))
         self.content = content
@@ -34,6 +35,7 @@ struct FilteredList_Previews: PreviewProvider {
     static var previews: some View {
         FilteredList(filterKey: "lastName",
                      filterValue: "A",
+                     predicate: "BEGINSWITH",
                      sortDescriptors: []) { (singer: Singer) in
             Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
         }
